@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Anton", "Archivo Black", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --color-ink: #1c0a5e;
+  --color-ink-deep: #150748;
+  --color-mint: #3dff9e;
+  --color-cream: #f6f4ef;
+  --color-flame: #ff4d00;
+  --color-sun: #ffc400;
+
+  /* Custom breakpoints — fills the gap below Tailwind's sm (40rem).
+     Usage: xs:grid-cols-2, xs:text-sm, etc. */
+  --breakpoint-xs: 30rem; /* 480px — large phones */
+  --breakpoint-2xs: 22.5rem; /* 360px — small phones */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: #f6f4ef;
+  color: #111;
+  overflow-x: hidden;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  font-stretch: condensed;
+  transform: scaleY(1.02);
+}
+
+/* striped display text like reference — uses explicit color var, not currentColor
+   (currentColor + color:transparent = invisible) */
+.text-lines {
+  --lines-color: #3dff9e;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--lines-color) 0px,
+    var(--lines-color) 4px,
+    transparent 4px,
+    transparent 9px
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-outline {
+  -webkit-text-stroke: 3px #1c0a5e;
+  color: transparent;
+}
+
+.img-blur-warm {
+  filter: saturate(1.5) contrast(1.08);
+}
+
+/* skeleton shimmer (image placeholders until real photos land) */
+@keyframes shimmer-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background: #e4dfd3;
+}
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.75),
+    transparent
+  );
+  animation: shimmer-slide 1.6s infinite;
+}
+
+/* hide scrollbar for horizontal rows */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================================
+   GLOBAL MEDIA QUERIES — responsive safety net (raw CSS)
+   Breakpoints mirror Tailwind: xs 480 · sm 640 · md 768 ·
+   lg 1024 · xl 1280. Mobile-first: base = smallest phones.
+   ============================================================ */
+
+/* — Small phones (≤ 479px): tighten display type, prevent overflow — */
+@media (max-width: 29.9375rem) {
+  body {
+    font-size: 15px;
+  }
+
+  .font-display {
+    letter-spacing: 0;
+  }
+
+  /* thinner outline so giant stroked type stays legible */
+  .text-outline {
+    -webkit-text-stroke-width: 1.5px;
+  }
+
+  /* striped headline bars scale down on tiny screens */
+  .text-lines {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--lines-color) 0px,
+      var(--lines-color) 3px,
+      transparent 3px,
+      transparent 7px
+    );
+  }
+
+  /* inline pill images inside display lines never force overflow */
+  .font-display img,
+  img.inline-img {
+    max-width: 22vw;
+  }
+}
+
+/* — Large phones / small tablets (480–639px) — */
+@media (min-width: 30rem) and (max-width: 39.9375rem) {
+  .text-outline {
+    -webkit-text-stroke-width: 2px;
+  }
+}
+
+/* — Tablets (640–1023px): fluid display type between phone & desktop — */
+@media (min-width: 40rem) and (max-width: 63.9375rem) {
+  .font-display {
+    text-wrap: balance;
+  }
+}
+
+/* — Short landscape phones (height ≤ 500px): reclaim vertical space — */
+@media (max-height: 31.25rem) and (orientation: landscape) {
+  section {
+    padding-top: clamp(1rem, 4vh, 2rem) !important;
+    padding-bottom: clamp(1rem, 4vh, 2rem) !important;
+  }
+}
+
+/* — Touch devices: meet 44px minimum touch targets — */
+@media (pointer: coarse) {
+  button,
+  a,
+  input[type='range'],
+  select {
+    min-height: 2.75rem;
+  }
+
+  nav a,
+  header nav a {
+    min-height: 0;
+  }
+
+  button.rounded-full,
+  a.rounded-full {
+    min-height: 2.5rem;
+  }
+}
+
+/* — Reduced motion: disable shimmer + rely on Tailwind for the rest — */
+@media (prefers-reduced-motion: reduce) {
+  .shimmer::after {
+    animation: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* — High-density (retina) small screens: keep images crisp — */
+@media (-webkit-min-device-pixel-ratio: 2) and (max-width: 47.9375rem) {
+  img {
+    image-rendering: auto;
+  }
+}
