@@ -44,6 +44,6 @@ jobs:
             docker pull ghcr.io/${{ github.repository }}:latest 
             docker stop fasho || true 
             docker rm fasho  || true 
-            docker run -d -p 127.0.0.1:3005:80 \
+            docker run -d -p 127.0.0.1:3001:80 \
             --restart unless-stopped \
             --name fasho ghcr.io/${{ github.repository }}:latest
