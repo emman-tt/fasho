@@ -6,7 +6,7 @@ on:
 
 env:
   APP_NAME: "fasho"
-  HOST_PORT: "3003"
+  HOST_PORT: "3001"
   CONTAINER_PORT: "80"
   NGINX_FILE: "fasho-nginx.conf"
 
