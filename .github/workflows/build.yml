@@ -60,12 +60,10 @@ jobs:
           username: ${{ secrets.USER }}
           port: 22
           key: ${{ secrets.KEY }}
-          envs: APP_NAME, HOST_PORT ,CONTAINER_PORT
+          envs: APP_NAME,HOST_PORT,CONTAINER_PORT
           script: |
             docker pull ghcr.io/${{ github.repository }}:latest 
-            docker stop $APP_NAME || true 
-            echo "$APP_NAME stopped"
-            docker rm $APP_NAME  || true 
+            docker rm -f  $APP_NAME  || true 
             echo "$APP_NAME removed"
             docker run -d -p 127.0.0.1:$HOST_PORT:$CONTAINER_PORT \
             --restart unless-stopped \
@@ -83,8 +81,7 @@ jobs:
           script: |
             sudo cp /home/ubuntu/deploy/$NGINX_FILE /etc/nginx/sites-available/$APP_NAME
             sudo ln -sf /etc/nginx/sites-available/$APP_NAME /etc/nginx/sites-enabled/$APP_NAME
-            sudo nginx -t
-            sudo systemctl reload nginx
+            sudo nginx -t &&  sudo systemctl reload nginx
 
   aftermath:
     needs: deploy
