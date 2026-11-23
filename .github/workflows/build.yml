@@ -71,8 +71,9 @@ jobs:
           username: ${{ secrets.USER }}
           port: 22
           key: ${{ secrets.KEY }}
-          envs: APP_NAME,HOST_PORT,CONTAINER_PORT
+          envs: APP_NAME,HOST_PORT,CONTAINER_PORT,DIR
           script: |
+            cd $DIR
             docker compose pull  
             docker compose up -d 
             docker logs $APP_NAME
