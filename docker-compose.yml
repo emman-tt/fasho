@@ -1,0 +1,13 @@
+services:
+  fasho:
+    image: docker pull ghcr.io/fasho:latest 
+    container_name: fasho
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:80"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost/"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s

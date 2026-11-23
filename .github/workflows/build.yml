@@ -62,12 +62,8 @@ jobs:
           key: ${{ secrets.KEY }}
           envs: APP_NAME,HOST_PORT,CONTAINER_PORT
           script: |
-            docker pull ghcr.io/${{ github.repository }}:latest 
-            docker rm -f  $APP_NAME  || true 
-            echo "$APP_NAME removed"
-            docker run -d -p 127.0.0.1:$HOST_PORT:$CONTAINER_PORT \
-            --restart unless-stopped \
-            --name $APP_NAME ghcr.io/${{ github.repository }}:latest 
+            docker compose pull ghcr.io/${{ github.repository }}:latest 
+            docker compose up -d 
             docker logs $APP_NAME
 
       - name: Copy nginx configuration, symlink to enable, test and reload host nginx
