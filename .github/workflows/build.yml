@@ -54,6 +54,15 @@ jobs:
           source: "fasho-nginx.conf"
           target: "/home/ubuntu/apps/fasho"
           
+      - name:  Copy docker compose file to dir
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          port: 22
+          key: ${{ secrets.KEY }}
+          source: docker-compose.yml
+          target: "/home/ubuntu/apps/fasho"
 
       - name: SSH into vm and deploy
         uses: appleboy/ssh-action@v1
